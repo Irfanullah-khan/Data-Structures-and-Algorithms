@@ -1,0 +1,193 @@
+
+package double_ended_queue;
+import java.util.Scanner;
+
+public class DeQue {
+    
+    int size = 0, capacity, rear = -1, front = -1;
+
+    boolean isempty() {
+        return size == 0;
+    }
+
+    boolean isfull() {
+        return size == capacity;
+    }
+
+    void insertAtFront(int[] DeQueArray) {
+        if (isfull()) {
+            System.out.println("Overflow! Queue is full.");
+            return;
+        }
+
+        Scanner input = new Scanner(System.in);
+        
+        System.out.print("Enter value to add at front: ");
+        int num = input.nextInt();
+
+        if (isempty()) {
+            front = rear = 0;
+        } 
+        else {
+            front = (front - 1 + capacity) % capacity; // wrap around
+        }
+
+        DeQueArray[front] = num;
+        size++;
+    }
+
+    void insertAtRear(int[] DeQueArray) {
+        if (isfull()) {
+            System.out.println("Overflow! Queue is full.");
+            return;
+        }
+
+        Scanner input = new Scanner(System.in);
+        
+        System.out.print("Enter value to add at rear: ");
+        int num = input.nextInt();
+
+        if (isempty()) {
+            front = rear = 0;
+        } 
+        else {
+            rear = (rear + 1) % capacity; // wrap around
+        }
+
+        DeQueArray[rear] = num;
+        size++;
+    }
+
+    void deleteFromFront(int[] DeQueArray) {
+        if (isempty()) {
+            System.out.println("Underflow! No element exists in Queue.");
+            return;
+        }
+
+        System.out.println("Element deleted from front: " + DeQueArray[front]);
+
+        if (front == rear) { // only one element
+            front = rear = -1;
+        } 
+        else {
+            front = (front + 1) % capacity;
+        }
+
+        size--;
+    }
+
+    void deleteFromRear(int[] DeQueArray) {
+        if (isempty()) {
+            System.out.println("Underflow! No element exists in Queue.");
+            return;
+        }
+
+        System.out.println("Element deleted from rear: " + DeQueArray[rear]);
+
+        if (front == rear) {
+            front = rear = -1;
+        } 
+        else {
+            rear = (rear - 1 + capacity) % capacity;
+        }
+
+        size--;
+    }
+
+    void display(int[] DeQueArray) {
+        if (isempty()) {
+            System.out.println("Queue is empty.");
+            return;
+        }
+
+        System.out.print("Queue elements: ");
+        int i = front;
+        for (int count = 0; count < size; count++) {
+            System.out.print(DeQueArray[i] + " ");
+            i = (i + 1) % capacity;
+        }
+        System.out.println();
+    }
+
+    void dispalyFront(int[] DeQueArray){
+      if (isempty()) {
+        System.out.println("Queue is empty. No front element.");
+        return;
+     }
+     System.out.println("Current front of queue is: " + DeQueArray[front] + " at index: " + front);
+    }
+
+    void dispalyRear(int[] DeQueArray){
+     if (isempty()) {
+        System.out.println("Queue is empty. No rear element.");
+        return;
+     }
+         System.out.println("Current rear of queue is: " + DeQueArray[rear] + " at index: " + rear);
+    }
+
+    
+    public static void main(String[] args) {
+        
+        
+        DeQue deque = new DeQue();//my object of class
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter max capacity of DeQue: ");
+        deque.capacity = input.nextInt();
+        
+        int[] DeQueArray = new int[deque.capacity];
+
+        while (true) {
+            System.out.println("\n**********");
+            System.out.println("Main Menu");
+            System.out.println("1. Insert at front");
+            System.out.println("2. Insert at rear");
+            System.out.println("3. Delete from front");
+            System.out.println("4. Delete from rear");
+            System.out.println("5. Display Queue");
+            System.out.println("6. Display Front");
+            System.out.println("7. Display Rear");
+            System.out.println("8. Exit");
+            System.out.println("**********");
+
+            System.out.print("Enter your choice: ");
+            int ch = input.nextInt();
+
+            switch (ch) {
+                case 1:
+                    deque.insertAtFront(DeQueArray);
+                    break;
+                    
+                case 2:
+                    deque.insertAtRear(DeQueArray);
+                    break;
+                    
+                case 3:
+                    deque.deleteFromFront(DeQueArray);
+                    break;
+                    
+                case 4:
+                    deque.deleteFromRear(DeQueArray);
+                    break;
+                    
+                case 5:
+                    deque.display(DeQueArray);
+                    break;
+                    
+                case 6:
+                    deque.dispalyFront(DeQueArray);
+                    break;
+                    
+                case 7:
+                    deque.dispalyRear(DeQueArray);
+                    break;
+                    
+                case 8:
+                    System.exit(0);
+                    
+                default:
+                    System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+}
