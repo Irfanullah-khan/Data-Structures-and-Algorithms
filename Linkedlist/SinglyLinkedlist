@@ -1,0 +1,395 @@
+package linkedlist;
+import java.util.Scanner;
+
+public class SinglyLinkedList {
+    
+    public class Node {
+    
+    int data;
+    Node next;
+
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+   }
+
+    Node head;
+    static int size = 0;
+    Scanner input = new Scanner(System.in);
+
+    public void addFirst() {
+
+        System.out.print("Enter data for the new node: ");
+        int data = input.nextInt();
+
+        Node newnode = new Node(data);
+        size++;
+
+        if (head == null) {
+            head = newnode;
+        } else {
+            newnode.next = head;
+            head = newnode;
+        }
+    }
+
+    public void addLast() {
+
+        System.out.print("Enter data for the new node: ");
+        int data = input.nextInt();
+
+        Node newnode = new Node(data);
+        size++;
+        if (head == null) {
+            head = newnode;
+            return;
+        }
+
+        Node curNode = head;
+        while (curNode.next != null) {
+            curNode = curNode.next;
+        }
+
+        curNode.next = newnode;
+
+    }
+
+    public void addBeforeNode() {
+
+        System.out.print("Enter target node value: ");
+        int target = input.nextInt();
+
+        System.out.print("Enter data for the new node: ");
+        int data = input.nextInt();
+
+        Node newnode = new Node(data);
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        size++;
+        if (head.data == target) {
+            newnode.next = head;
+            head = newnode;
+            return;
+        }
+
+        Node curNode = head;
+        Node prevNode = null;
+
+        while (curNode != null && !(curNode.data == target)) {
+            prevNode = curNode;
+            curNode = curNode.next;
+        }
+
+        if (curNode == null) {
+            System.out.println("Target node not found.");
+            return;
+        }
+
+        prevNode.next = newnode;
+        newnode.next = curNode;
+    }
+
+    public void addAfterNode() {
+
+        System.out.print("Enter target node: ");
+        int target = input.nextInt();
+
+        System.out.print("Enter data for the new node: ");
+        int data = input.nextInt();
+
+        Node newnode = new Node(data);
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        size++;
+        Node curNode = head;
+
+        while (curNode != null && !(curNode.data == target)) {
+            curNode = curNode.next;
+        }
+
+        if (curNode == null) {
+            System.out.println("Target node not found.");
+            return;
+        }
+
+        newnode.next = curNode.next;
+        curNode.next = newnode;
+    }
+
+    public void deleteFirst() {
+
+        if (head == null) {
+            System.out.println("Linkedlist is empty...");
+            return;
+        }
+
+        head = head.next;
+        size--;
+
+    }
+
+    public void deletelast() {
+    if (head == null) {
+        System.out.println("Linkedlist is empty...");
+        return;
+    }
+
+    size--;
+
+    if (head.next == null) {
+        head = null;
+        return;
+    }
+
+    Node prev = head;
+    Node curr = head.next;
+
+    while (curr.next != null) {
+        prev = curr;
+        curr = curr.next;
+    }
+
+    prev.next = null;
+}
+
+    public void deleteBeforeNode() {
+
+        System.out.print("Enter target node: ");
+        int target = input.nextInt();
+
+        if (head == null || head.next == null) {
+            System.out.println("List is too short. Nothing to delete.");
+            return;
+        }
+
+        if (head.data == (target)) {
+            System.out.println("No node exists before the head.");
+            return;
+        }
+
+        size--;
+
+        if (head.next.data == (target)) {
+            System.out.println("Deleting node before " + target + ": " + head.data);
+            head = head.next;
+            return;
+        }
+
+        Node prevPrev = null;
+        Node prev = head;
+        Node curr = head.next;
+
+        while (curr != null && !(curr.data == target)) {
+            prevPrev = prev;
+            prev = curr;
+            curr = curr.next;
+        }
+
+        if (curr == null) {
+            System.out.println("Target node not found.");
+            return;
+        }
+
+        System.out.println("Deleting node before " + target + ": " + prev.data);
+        prevPrev.next = curr;
+    }
+
+    public void deleteAfterNode() {
+
+        System.out.print("Enter target node: ");
+        int target = input.nextInt();
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        Node current = head;
+
+        size--;
+        while (current != null && !(current.data == target)) {
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println("Target node not found.");
+            return;
+        }
+
+        if (current.next == null) {
+            System.out.println("No node exists after the target node.");
+            return;
+        }
+
+        System.out.println("Deleting node after " + target + ": " + current.next.data);
+        current.next = current.next.next;
+    }
+
+    public void deleteByValue() {
+        System.out.print("Enter the value of the node to delete: ");
+        int value = input.nextInt();
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        if (head.data == value) {
+            System.out.println("Deleting node with value: " + value);
+            head = head.next;
+            size--;
+            return;
+        }
+
+        Node prev = head;
+        Node current = head.next;
+
+        while (current != null && current.data != value) {
+            prev = current;
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println("Value not found in the list.");
+            return;
+        }
+
+        System.out.println("Deleting node with value: " + value);
+        prev.next = current.next;
+        size--;
+    }
+
+    public void display() {
+        if (head == null) {
+            System.out.println("Linkedlist is empty");
+            return;
+        }
+
+        Node curNode = head;
+        while (curNode != null) {
+
+            System.out.print(curNode.data + " -> ");
+            curNode = curNode.next;
+        }
+        System.out.println("null");
+    }
+
+    public void getsize() {
+        System.out.println("size of linkedlist is :" + size);
+    }
+
+    public static void main(String[] args) {
+        SinglyLinkedList list = new SinglyLinkedList();
+        Scanner sc = new Scanner(System.in);
+        int mainChoice, subChoice;
+
+        System.out.println("\n===== Singly linked list =====");
+        
+        do {
+            System.out.println("\n===== MAIN MENU =====");
+            System.out.println("1. Add Node");
+            System.out.println("2. Delete Node");
+            System.out.println("3. Display Linked List");
+            System.out.println("4. Size of Linked List");
+            System.out.println("5. Exit \n");
+            System.out.print("Enter your choice: ");
+            mainChoice = sc.nextInt();
+
+            switch (mainChoice) {
+                case 1:
+                    do {
+                        System.out.println("\n--- Add Node Menu ---");
+                        System.out.println("1. Add at Front");
+                        System.out.println("2. Add at Last");
+                        System.out.println("3. Add Before a Node");
+                        System.out.println("4. Add After a Node");
+                        System.out.println("5. Exit to Main Menu");
+                        System.out.print("Enter your choice: ");
+                        subChoice = sc.nextInt();
+
+                        switch (subChoice) {
+                            case 1:
+                                list.addFirst();
+                                break;
+                            case 2:
+                                list.addLast();
+                                break;
+                            case 3:
+                                list.addBeforeNode();
+                                break;
+                            case 4:
+                                list.addAfterNode();
+                                break;
+                            case 5:
+                                System.out.println("Returning to Main Menu...");
+                                break;
+                            default:
+                                System.out.println("Invalid choice.");
+                        }
+                    } while (subChoice != 5);
+                    break;
+
+                case 2:
+                    do {
+                        System.out.println("\n--- Delete Node Menu ---");
+                        System.out.println("1. Delete at Front");
+                        System.out.println("2. Delete at Last");
+                        System.out.println("3. Delete Before a Node");
+                        System.out.println("4. Delete After a Node");
+                        System.out.println("5. Delete a node By value");
+                        System.out.println("6 Exit to Main Menu");
+                        System.out.print("Enter your choice: ");
+                        subChoice = sc.nextInt();
+
+                        switch (subChoice) {
+                            case 1:
+                                list.deleteFirst();
+                                break;
+                            case 2:
+                                list.deletelast();
+                                break;
+                            case 3:
+                                list.deleteBeforeNode();
+                                break;
+                            case 4:
+                                list.deleteAfterNode();
+                                break;
+
+                            case 5:
+                                list.deleteByValue();
+                                break;
+
+                            case 6:
+                                System.out.println("Returning to Main Menu...");
+                                break;
+                            default:
+                                System.out.println("Invalid choice.");
+                        }
+                    } while (subChoice != 6);
+                    break;
+
+                case 3:
+                    list.display();
+                    break;
+                case 4:
+                    list.getsize();
+                    break;
+                case 5:
+                    System.out.println("Exiting program...");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (mainChoice != 5);
+    }
+
+}
