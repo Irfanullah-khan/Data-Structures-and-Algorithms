@@ -1,0 +1,133 @@
+
+package circularqueue;
+import java.util.Scanner;
+
+
+public class Circular_queue {
+    
+    int[] queue; 
+    int front, rear, size, capacity; 
+ 
+    public Circular_queue(int capacity) { 
+        
+        this.capacity = capacity; 
+        queue = new int[capacity]; 
+        front = rear = -1; 
+        size = 0; 
+    } 
+
+    
+    boolean isempty(){
+        return size == 0;
+    }
+    
+    boolean isfull(){
+        return size == capacity;
+    }
+    
+    
+    void enqeue(){
+        if (isfull()) {
+            System.out.println("overflow! can't insert other elememnts");
+        }
+        
+        else{
+            
+            Scanner input = new Scanner(System.in);
+            
+            System.out.println("Enter value to insert : ");
+            int value = input.nextInt();
+            
+            if (isempty()) {
+                rear = front = 0;
+            }
+            
+            else{
+                rear = (rear + 1) % capacity;
+            }
+            queue[rear] = value;
+            size++;
+
+            System.out.println("value added to queue :"+value );
+        }
+    }
+    
+    
+    
+    void dequeue(){
+        
+        if (isempty()) {
+            System.out.println("underflow !  no element exists in Queue");
+        }
+        else{
+             int val = queue[front];
+        if (front == rear) { // Only one element
+            
+            front = rear = -1;
+        } 
+        else {
+            front = (front + 1) % capacity;
+        }
+        size--;
+        System.out.println(" value deleted"+val);
+
+        }
+    }
+    
+    
+    void display(){
+        if (isempty()) {
+            System.out.println("no element is exist in queue");
+        }
+        else{
+            for (int i = 0; i < size; i++) {
+                System.out.print(queue[(front + i) % capacity] + " ");
+            }
+            System.out.println();
+        }
+    }
+    
+    public static void main(String[] args) {
+        
+      
+           Scanner input = new Scanner(System.in);
+           
+           System.out.println("Enter max capacity of Queue : ");
+           int capacity = input.nextInt();
+           
+           Circular_queue s1 = new Circular_queue(capacity);
+        
+        while(true){
+            
+            
+        System.out.println("**********");
+        System.out.println("Main Menu \n 1. Enqueue element\n 2. Dequeue element \n 3. Dispaly Queue \n 4. Exit \n");
+        System.out.println("**********");
+        
+
+        System.out.println("enter your choice : ");
+        int ch = input.nextInt();
+        
+        switch(ch){
+            case 1: 
+                s1.enqeue();
+                break;
+                
+            case 2:
+                s1.dequeue();
+                break;
+            
+            case 3:
+                s1.display();
+                break;
+                
+            case 4:
+                System.exit(0);
+                break;    
+                
+            default:
+                System.out.println("enter valid number");
+        }
+        }   
+    }
+}
