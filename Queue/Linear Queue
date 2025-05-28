@@ -1,0 +1,105 @@
+package linearqueue;
+
+import java.util.Scanner;
+
+public class LinearQueue {
+
+    static int rear = -1;
+    static int front = -1;
+
+    void insert(int[] queue, int size) {
+
+        if (rear >= (size - 1)) {
+            System.out.println("overflow! cant insert other elememnts");
+        } else {
+
+            rear++;
+            System.out.println("rear :" + rear);
+            Scanner input = new Scanner(System.in);
+
+            System.out.println("Enter value to insert : ");
+            int num = input.nextInt();
+
+            queue[rear] = num;
+
+            if (front == -1) {
+                front++;
+            }
+        }
+    }
+
+    void delete(int[] queue, int size) {
+
+        if (front == -1 || front > rear) {
+            System.out.println("underflow !  no element exists");
+        } else {
+
+            int del = queue[front];
+
+            System.out.println(" " + del + " deleted successfully");
+            if (front == rear) {
+                front = rear = -1;
+            } else {
+                front++;
+            }
+
+        }
+
+    }
+
+    void Dispaly(int[] queue) {
+
+        if (front == -1) {
+            System.out.println("queue is empty");
+        } else {
+            System.out.println("queue elements are : ");
+            for (int i = front; i <= rear; i++) {
+                System.out.println(queue[i]);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        LinearQueue s1 = new LinearQueue();
+
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Enter size of Queue : ");
+        int size = input.nextInt();
+
+        int queueArray[] = new int[size];
+
+        while (true) {
+
+            System.out.println("**********");
+            System.out.println("Main Menu \n 1. Insert Element \n 2. Delete Element \n 3. Dispaly Queue \n 4. Exit \n");
+            System.out.println("**********");
+
+            System.out.println("enter your choice : ");
+            int ch = input.nextInt();
+
+            switch (ch) {
+                case 1:
+                    s1.insert(queueArray, size);
+                    break;
+
+                case 2:
+                    s1.delete(queueArray, size);
+                    break;
+
+                case 3:
+                    s1.Dispaly(queueArray);
+                    break;
+
+                case 4:
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("enter valid number");
+            }
+        }
+    }
+
+}
