@@ -1,0 +1,250 @@
+package circularlinkedlist;
+
+import java.util.Scanner;
+
+public class CircularDoublyLinkedList {
+
+    class Node {
+        int data;
+        Node next;
+        Node prev;
+
+        public Node(int data) {
+            this.data = data;
+        }
+    }
+
+    Node head = null;
+    Node tail = null;
+    int size = 0;
+
+    Scanner sc = new Scanner(System.in);
+
+    public void addFirst() {
+        System.out.print("Enter value to add at beginning: ");
+        int data = sc.nextInt();
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            head = tail = newNode;
+            head.next = head;
+            head.prev = head;
+        } 
+        else {
+            newNode.next = head;
+            newNode.prev = tail;
+            head.prev = newNode;
+            tail.next = newNode;
+            head = newNode;
+        }
+        size++;
+    }
+
+    public void addLast() {
+        System.out.print("Enter value to add at end: ");
+        int data = sc.nextInt();
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            head = tail = newNode;
+            head.next = head;
+            head.prev = head;
+        } else {
+            newNode.prev = tail;
+            newNode.next = head;
+            tail.next = newNode;
+            head.prev = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public void addBeforeANode() {
+        System.out.print("Enter target node data to insert before: ");
+        int target = sc.nextInt();
+        System.out.print("Enter new value to insert before target: ");
+        int data = sc.nextInt();
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        Node temp = head;
+        do {
+            if (temp.data == target) {
+                if (temp == head) {
+                    addFirst();
+                    return;
+                }
+                newNode.prev = temp.prev;
+                newNode.next = temp;
+                temp.prev.next = newNode;
+                temp.prev = newNode;
+                size++;
+                return;
+            }
+            temp = temp.next;
+        } while (temp != head);
+
+        System.out.println("Target not found.");
+    }
+
+    public void addAfterANode() {
+        System.out.print("Enter target node data to insert after: ");
+        int target = sc.nextInt();
+        System.out.print("Enter value to insert after target: ");
+        int data = sc.nextInt();
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        Node temp = head;
+        do {
+            if (temp.data == target) {
+                newNode.next = temp.next;
+                newNode.prev = temp;
+                temp.next.prev = newNode;
+                temp.next = newNode;
+
+                if (temp == tail) {
+                    tail = newNode;
+                }
+                size++;
+                return;
+            }
+            temp = temp.next;
+        } while (temp != head);
+
+        System.out.println("Target not found.");
+    }
+
+    public void deleteNode() {
+        System.out.print("Enter value of node to delete: ");
+        int target = sc.nextInt();
+
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        Node temp = head;
+        do {
+            if (temp.data == target) {
+                if (head == tail && head.data == target) { // Only one node
+                    head = tail = null;
+                } else if (temp == head) {
+                    head = head.next;
+                    head.prev = tail;
+                    tail.next = head;
+                } else if (temp == tail) {
+                    tail = tail.prev;
+                    tail.next = head;
+                    head.prev = tail;
+                } else {
+                    temp.prev.next = temp.next;
+                    temp.next.prev = temp.prev;
+                }
+                System.out.println("Deleted node: " + target);
+                size--;
+                return;
+            }
+            temp = temp.next;
+        } while (temp != head);
+
+        System.out.println("Node not found.");
+    }
+
+    public void displayFromHead() {
+        if (head == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        Node curNode = head;
+        System.out.print("Head -> ");
+        do {
+            System.out.print(curNode.data + " <-> ");
+            curNode = curNode.next;
+        } while (curNode != head);
+        System.out.println("HEAD (circular)");
+    }
+
+    public void displayFromTail() {
+        if (tail == null) {
+            System.out.println("List is empty.");
+            return;
+        }
+
+        Node curNode = tail;
+        System.out.print("Tail -> ");
+        do {
+            System.out.print(curNode.data + " <-> ");
+            curNode = curNode.prev;
+        } while (curNode != tail);
+        System.out.println("TAIL (circular)");
+    }
+
+    public void showSize() {
+        System.out.println("Size of linked list is: " + size);
+    }
+
+    public static void main(String[] args) {
+        CircularDoublyLinkedList list = new CircularDoublyLinkedList();
+        Scanner sc = new Scanner(System.in);
+
+        int choice;
+
+        do {
+            System.out.println("\n--- Circular Doubly Linked List Menu ---");
+            System.out.println("1. Add First");
+            System.out.println("2. Add Last");
+            System.out.println("3. Add Before a Node");
+            System.out.println("4. Add After a Node");
+            System.out.println("5. Delete a Node");
+            System.out.println("6. Display From Head");
+            System.out.println("7. Display From Tail");
+            System.out.println("8. Show Size");
+            System.out.println("9. Exit");
+            System.out.print("Enter your choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    list.addFirst();
+                    break;
+                case 2:
+                    list.addLast();
+                    break;
+                case 3:
+                    list.addBeforeANode();
+                    break;
+                case 4:
+                    list.addAfterANode();
+                    break;
+                case 5:
+                    list.deleteNode();
+                    break;
+                case 6:
+                    list.displayFromHead();
+                    break;
+                case 7:
+                    list.displayFromTail();
+                    break;
+                case 8:
+                    list.showSize();
+                    break;
+                case 9:
+                    System.out.println("Exiting program.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 9);
+    }
+}
